@@ -120,7 +120,7 @@ class MyHook: MLHook::HookMLEventsByType {
         // );//, 1.0, false, false, false);
         // songSource.Play();
         while (song is null) yield();
-        @currVoice = Audio::Play(song, .4);
+        @currVoice = Audio::Play(song, S_Volume);
         trace('set curr voice');
         startnew(CoroutineFunc(WatchMenuPauseCurrVoice));
     }

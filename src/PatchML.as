@@ -110,7 +110,7 @@ Boolean ShouldEnableSpoderize() {
 	if (Players[0] == Null || Players[0].SpawnStatus != CSmPlayer::ESpawnStatus::Spawned || Players[0].StartTime > Now) return False;
 	if (_SpoderizeLastCheck + 100 < Now) {
 		_SpoderizeLastCheck = Now;
-		return ML::Rand(0.0, 1.0) <= 0.001;
+		return ML::Rand(0.0, 1.0) <= 0.0006;
 	}
 	return False;
 }
