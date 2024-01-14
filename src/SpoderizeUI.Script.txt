@@ -1,0 +1,70 @@
+#Const C_PageUID "Spoderized"
+
+
+declare Integer G_Last_Nonce;
+declare Integer G_Last_SongNonce;
+declare Integer G_Last_WarningNonce;
+
+
+// logging function, should be "MLHook_LogMe_" + PageUID
+Void MLHookLog(Text _Msg) {
+    SendCustomEvent("MLHook_LogMe_" ^ C_PageUID, [_Msg]);
+}
+
+
+
+Void UpdateSpoderizeActive() {
+    declare netread Integer Net_Spoderize_Started for Players[0] = 0;
+    SendCustomEvent("MLHook_Event_" ^ C_PageUID, ["Started", "" ^ Net_Spoderize_Started]);
+}
+Void UpdateSpoderizeSong() {
+    declare netread Boolean Net_Spoderize_SongPlaying for Players[0] = False;
+    SendCustomEvent("MLHook_Event_" ^ C_PageUID, ["SongPlaying", "" ^ Net_Spoderize_SongPlaying]);
+}
+Void UpdateSpoderizeWarning() {
+    declare netread Boolean Net_Spoderize_Warning for Players[0] = False;
+    SendCustomEvent("MLHook_Event_" ^ C_PageUID, ["Warning", "" ^ Net_Spoderize_Warning]);
+}
+
+
+Void CheckUpdates() {
+    if (Players.count == 0) return;
+    if (Players[0] == Null) return;
+	declare netread Integer Net_Spoderize_Nonce for Players[0] = 0;
+	declare netread Integer Net_Spoderize_SongNonce for Players[0] = 0;
+	declare netread Integer Net_Spoderize_WarningNonce for Players[0] = 0;
+
+    if (Net_Spoderize_Nonce != G_Last_Nonce) {
+        G_Last_Nonce = Net_Spoderize_Nonce;
+        UpdateSpoderizeActive();
+    }
+    if (Net_Spoderize_SongNonce != G_Last_SongNonce) {
+        G_Last_SongNonce = Net_Spoderize_SongNonce;
+        UpdateSpoderizeSong();
+    }
+    if (Net_Spoderize_WarningNonce != G_Last_WarningNonce) {
+        G_Last_WarningNonce = Net_Spoderize_WarningNonce;
+        UpdateSpoderizeWarning();
+    }
+}
+
+
+Boolean IsCampaign() {
+    if (Players.count == 0) return False;
+    declare netread Boolean Net_Spoderize_ModeIsRunning for Players[0] = False;
+    return Net_Spoderize_ModeIsRunning || Playground.ServerInfo.ModeName == "TM_Campaign_Local";
+}
+
+
+main() {
+    G_Last_Nonce = 0;
+    G_Last_SongNonce = 0;
+    G_Last_WarningNonce = 0;
+    sleep(1000);
+    if (IsCampaign()) {
+        while (True) {
+            yield;
+            CheckUpdates();
+        }
+    }
+}
