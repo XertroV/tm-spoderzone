@@ -11,6 +11,6 @@ Authors: XertroV
 
 Suggestions/feedback: @XertroV on Openplanet discord
 
-Code/issues: [https://github.com/XertroV/tm-play-map](https://github.com/XertroV/tm-play-map)
+Code/issues: [https://github.com/XertroV/tm-spoderzone](https://github.com/XertroV/tm-spoderzone)
 
 GL HF
